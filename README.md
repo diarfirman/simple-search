@@ -1,3 +1,5 @@
+Some basic Git commands are:
+
 # **Aplikasi Pencarian Ecommerce Sederhana v0.4**
 
 Versi: 0.4 (Mengirim Traces & Logs via OTLP)  
@@ -40,7 +42,7 @@ Aplikasi ini adalah sebuah layanan web sederhana yang dibangun menggunakan Pytho
   * ecs-logging
 
 ## **4\. Struktur Proyek**
-
+```
 simple-search-app/  
 ├── .env.example           \# Contoh file konfigurasi  
 ├── .gitignore             \# File yang diabaikan Git  
@@ -49,7 +51,7 @@ simple-search-app/
 └── templates/  
     ├── index.html         \# Template halaman utama  
     └── results.html       \# Template halaman hasil
-
+```
 ## **5\. Setup dan Instalasi**
 
 1. **Prasyarat**:  
@@ -58,106 +60,120 @@ simple-search-app/
    * Akses ke instance Elasticsearch.  
    * Elastic APM Server berjalan, dapat diakses, terhubung ke Elasticsearch, dan dikonfigurasi untuk menerima data OTLP (traces *dan* logs).  
 2. **Clone Repository**:  
+   ```
    git clone \<url\_repository\_github\_anda\>  
    cd simple-search-app
+   ```
 
-3. **Buat & Aktifkan Virtual Environment**:  
-   python \-m venv venv  
-   \# Aktivasi (Windows PowerShell): .\\venv\\Scripts\\Activate.ps1  
-   \# Aktivasi (Windows CMD): venv\\Scripts\\activate.bat  
-   \# Aktivasi (Linux/macOS): source venv/bin/activate
+3. **Buat & Aktifkan Virtual Environment**:
+   ```  
+   python -m venv venv  
+   # Aktivasi (Windows PowerShell): .\\venv\\Scripts\\Activate.ps1  
+   # Aktivasi (Windows CMD): venv\\Scripts\\activate.bat  
+   # Aktivasi (Linux/macOS): source venv/bin/activate
+   ```
 
-4. **Instal Dependensi**:  
-   pip install \-r requirements.txt
+5. **Instal Dependensi**:  
+   ```
+   pip install -r requirements.txt
+   ```
 
-5. **Buat File Konfigurasi (.env)**:  
+6. **Buat File Konfigurasi (.env)**:  
    * Salin file .env.example menjadi .env:  
-     \# Windows CMD  
-     copy .env.example .env  
-     \# Windows PowerShell  
-     Copy-Item .env.example .env  
-     \# Linux/macOS  
+     # Windows CMD
+     ```
+     copy .env.example .env
+     ``` 
+     # Windows PowerShell  
+     ```
+     Copy-Item .env.example .env
+     ```
+     # Linux/macOS  
+     ```
      cp .env.example .env
+     ```
 
    * **Edit file .env** dan masukkan nilai konfigurasi yang benar untuk environment Anda (endpoint ES, endpoint APM, kredensial, dll.). Lihat isi .env.example di bawah.  
-6. **Jalankan Aplikasi**:  
+7. **Jalankan Aplikasi**:  
+   ```
    python app.py
+   ```
 
-7. **Akses Aplikasi**: Buka browser ke http://127.0.0.1:5000.
+8. **Akses Aplikasi**: Buka browser ke http://127.0.0.1:5000.
 
 ## **6\. File Kode**
 
 Berikut adalah isi dari file-file utama. Anda dapat menemukan file lengkapnya di repositori ini.
 
 ### **requirements.txt**
+```
+# requirements.txt
 
-\# requirements.txt
-
-\# Web Framework  
+# Web Framework  
 Flask
 
-\# Elasticsearch Client  
+# Elasticsearch Client  
 elasticsearch\>=8.0.0,\<9.0.0
 
-\# Environment Variables  
+# Environment Variables  
 python-dotenv
 
-\# \--- OpenTelemetry Core \---  
+# \--- OpenTelemetry Core \---  
 opentelemetry-api  
 opentelemetry-sdk
 
-\# \--- OpenTelemetry Instrumentations \---  
+# \--- OpenTelemetry Instrumentations \---  
 opentelemetry-instrumentation-flask  
 opentelemetry-instrumentation-elasticsearch  
 opentelemetry-instrumentation-logging \# Untuk korelasi trace-log
 
-\# \--- OpenTelemetry Exporters \---  
+# \--- OpenTelemetry Exporters \---  
 \# Mengirim Traces dan Logs via OTLP/HTTP  
 opentelemetry-exporter-otlp-proto-http
 
-\# \--- Logging \---  
+# \--- Logging \---  
 ecs-logging \# Untuk format log ECS JSON
-
+```
 ### **.env.example**
+```
+# .env.example  
+# Salin file ini menjadi .env dan isi nilainya sesuai environment Anda.  
+# JANGAN commit file .env yang berisi kredensial ke Git.
 
-\# .env.example  
-\# Salin file ini menjadi .env dan isi nilainya sesuai environment Anda.  
-\# JANGAN commit file .env yang berisi kredensial ke Git.
-
-\# \--- Konfigurasi Elasticsearch (Untuk Pencarian) \---  
-\# Ganti dengan host ES Anda (bisa https://...)  
+# \--- Konfigurasi Elasticsearch (Untuk Pencarian) \---  
+# Ganti dengan host ES Anda (bisa https://...)  
 ELASTICSEARCH\_HOSTS=http://localhost:9200  
-\# Opsional: Jika pakai Basic Auth (hapus \# dan isi nilainya)  
-\# ELASTICSEARCH\_USER=elastic  
-\# ELASTICSEARCH\_PASSWORD=your\_password\_here  
-\# Opsional: Jika pakai API Key (hapus \# dan isi nilainya)  
-\# ELASTICSEARCH\_API\_KEY\_ID=your\_api\_key\_id  
-\# ELASTICSEARCH\_API\_KEY\_SECRET=your\_api\_key\_secret  
+# Opsional: Jika pakai Basic Auth (hapus \# dan isi nilainya)  
+# ELASTICSEARCH\_USER=elastic  
+# ELASTICSEARCH\_PASSWORD=your\_password\_here  
+# Opsional: Jika pakai API Key (hapus \# dan isi nilainya)  
+# ELASTICSEARCH\_API\_KEY\_ID=your\_api\_key\_id  
+# ELASTICSEARCH\_API\_KEY\_SECRET=your\_api\_key\_secret  
 INDEX\_NAME=kibana\_sample\_data\_ecommerce
 
-\# \--- Konfigurasi Flask \---  
-\# Ganti dengan kunci rahasia yang kuat dan unik untuk aplikasi Anda\!  
+# \--- Konfigurasi Flask \---  
+# Ganti dengan kunci rahasia yang kuat dan unik untuk aplikasi Anda\!  
 FLASK\_SECRET\_KEY='ganti\_dengan\_kunci\_rahasia\_anda\_yang\_unik\_dan\_aman'
 
-\# \--- Konfigurasi OpenTelemetry (SESUAIKAN DENGAN NILAI ANDA) \---  
-\# Nama layanan Anda yang akan muncul di backend OTel  
+# \--- Konfigurasi OpenTelemetry (SESUAIKAN DENGAN NILAI ANDA) \---  
+# Nama layanan Anda yang akan muncul di backend OTel  
 OTEL\_SERVICE\_NAME=ecommerce-search-app  
-\# WAJIB: Endpoint OTLP (URL Dasar APM Server Anda)  
+# WAJIB: Endpoint OTLP (URL Dasar APM Server Anda)  
 OTEL\_EXPORTER\_OTLP\_ENDPOINT=http://localhost:8200 \# GANTI DENGAN ENDPOINT APM SERVER ANDA (misal: https://\<id\>.apm.\<region\>.aws.cloud.es.io:443)  
-\# WAJIB JIKA APM SERVER MEMERLUKAN: Header Otentikasi (hapus \# dan ganti nilainya)  
-\# Contoh Secret Token:  
-\# OTEL\_EXPORTER\_OTLP\_HEADERS=Authorization=Bearer \<YOUR\_APM\_SECRET\_TOKEN\>  
-\# Contoh API Key:  
-\# OTEL\_EXPORTER\_OTLP\_HEADERS=Authorization=ApiKey \<YOUR\_BASE64\_ENCODED\_APM\_API\_KEY\>  
-\# Atribut Resource Tambahan (Opsional tapi direkomendasikan)  
+# WAJIB JIKA APM SERVER MEMERLUKAN: Header Otentikasi (hapus \# dan ganti nilainya)  
+# Contoh Secret Token:  
+# OTEL\_EXPORTER\_OTLP\_HEADERS=Authorization=Bearer \<YOUR\_APM\_SECRET\_TOKEN\>  
+# Contoh API Key:  
+# OTEL\_EXPORTER\_OTLP\_HEADERS=Authorization=ApiKey \<YOUR\_BASE64\_ENCODED\_APM\_API\_KEY\>  
+# Atribut Resource Tambahan (Opsional tapi direkomendasikan)  
 OTEL\_RESOURCE\_ATTRIBUTES=service.version=0.4.0,deployment.environment=development \# Sesuaikan versi & env  
-\# Menandakan penggunaan OTLP untuk logs (opsional, untuk kejelasan)  
-\# OTEL\_LOGS\_EXPORTER=otlp
+# Menandakan penggunaan OTLP untuk logs (opsional, untuk kejelasan)  
+# OTEL\_LOGS\_EXPORTER=otlp
 
-\# \--- Konfigurasi Logging \---  
-\# Level log aplikasi (DEBUG, INFO, WARNING, ERROR, CRITICAL)  
+# \--- Konfigurasi Logging \---  
+# Level log aplikasi (DEBUG, INFO, WARNING, ERROR, CRITICAL)  
 APP\_LOG\_LEVEL=INFO
-
+```
 *(File app.py, templates/index.html, templates/results.html, dan .gitignore dapat dilihat langsung di file-file repositori.)*
 
 ## **7\. Troubleshooting Logs OTLP**
