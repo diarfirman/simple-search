@@ -1,0 +1,26 @@
+# requirements.txt
+
+# Web Framework
+Flask
+
+# Elasticsearch Client
+elasticsearch>=8.0.0
+
+# Environment Variables
+python-dotenv
+
+# --- OpenTelemetry Core ---
+opentelemetry-api
+opentelemetry-sdk
+
+# --- OpenTelemetry Instrumentations ---
+opentelemetry-instrumentation-flask
+opentelemetry-instrumentation-elasticsearch
+opentelemetry-instrumentation-logging # Untuk korelasi trace-log
+
+# --- OpenTelemetry Exporters ---
+# Mengirim Traces dan Logs via OTLP/HTTP
+opentelemetry-exporter-otlp-proto-http
+
+# --- Logging ---
+ecs-logging # Untuk format log ECS JSON
