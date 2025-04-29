@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="id">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Hasil Pencarian Ecommerce</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; background-color: #f8f9fa; }
+        .container { max-width: 1100px; margin: 30px auto; padding: 20px; }
+        h1, h2 { text-align: center; color: #343a40; }
+        h1 { margin-bottom: 10px;}
+        h2 { margin-bottom: 30px; font-size: 1.2em; color: #6c757d; }
+        .result-item { border: 1px solid #dee2e6; padding: 20px; margin-bottom: 20px; border-radius: 8px; background-color: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .result-item h3 { margin-top: 0; margin-bottom: 15px; color: #007bff; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        .result-item p { margin: 5px 0; color: #495057; line-height: 1.6; }
+        .result-item strong { color: #212529; }
+        .result-item h4 { margin-top: 20px; margin-bottom: 10px; color: #343a40; }
+        .back-link { display: inline-block; margin-top: 30px; padding: 10px 20px; background-color: #6c757d; color: white; text-decoration: none; border-radius: 5px; transition: background-color 0.2s ease; }
+        .back-link:hover { background-color: #5a6268; }
+        .no-results { text-align: center; color: #6c757d; margin-top: 40px; font-size: 1.1em; }
+        .error-message { text-align: center; color: #dc3545; background-color: #f8d7da; border: 1px solid #f5c6cb; padding: 15px; border-radius: 5px; margin-bottom: 20px;}
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 0.95em; }
+        th, td { border: 1px solid #e9ecef; padding: 10px 12px; text-align: left; }
+        th { background-color: #f8f9fa; font-weight: bold; color: #495057; }
+        tbody tr:nth-child(odd) { background-color: #fcfcfc; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Hasil Pencarian untuk "{{ query }}"</h1>
+
+        {% if error %}
+            <p class="error-message">Error: {{ error }}</p>
+        {% elif results %}
+            <h2>Menemukan {{ results|length }} hasil</h2>
+            {% for hit in results %}
+                <div class="result-item">
+                    <h3>Pesanan ID: {{ hit._source.order_id }}</h3>
+                    <p><strong>Pelanggan:</strong> {{ hit._source.customer_full_name }} ({{ hit._source.email }})</p>
+                    <p><strong>Tanggal Pesanan:</strong> {{ hit._source.order_date }}</p>
+                    <p><strong>Total Harga:</strong> {{ hit._source.taxful_total_price }} {{ hit._source.currency }}</p>
+                    <p><strong>Jumlah Item:</strong> {{ hit._source.total_quantity }}</p>
+                    <h4>Produk:</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nama Produk</th>
+                                <th>Kategori</th>
+                                <th>Manufaktur</th>
+                                <th>Jumlah</th>
+                                <th>Harga Satuan</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for product in hit._source.products %}
+                            <tr>
+                                <td>{{ product.product_name }}</td>
+                                <td>{{ product.category }}</td>
+                                <td>{{ product.manufacturer }}</td>
+                                <td>{{ product.quantity }}</td>
+                                <td>{{ product.price }} {{ hit._source.currency }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="no-results">Tidak ada hasil yang ditemukan untuk "{{ query }}".</p>
+        {% endif %}
+
+        <a href="/" class="back-link">Kembali ke Pencarian</a>
+    </div>
+</body>
+</html>
